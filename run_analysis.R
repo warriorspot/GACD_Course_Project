@@ -50,4 +50,4 @@ result2$activity <- NA
 
 result <- rbind(result1, result2)
 
-write.table(x, "result.txt", row.names=FALSE)
+write.table(result, "result.txt", row.names=FALSE)
