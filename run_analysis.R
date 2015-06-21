@@ -37,6 +37,17 @@ merged <- merged[, indices]
 means_activity <- by(merged[,1:(length(indices) - 2)], merged$activity, colMeans)
 means_subject <- by(merged[,1:(length(indices) - 2)], merged$subject, colMeans)
 
-# I need to append the subject and activity named columns, then melt the data set so all
-# means for activity are first, then means for subject are next
-result = data.frame(matrix(unlist(means_activity), nrow=length(means_acitivity), byrow=T))
+result1 <- data.frame(matrix(unlist(means_activity), nrow=length(means_activity), byrow=T))
+names(result1) <- names(merged)[1:79]
+result1 <- cbind(result1, activity=rownames(result1))
+result1$subject <- NA
+levels(result1$activity) <- read.table("activity_labels.txt", stringsAsFactors=FALSE)[[2]]
+
+result2 <- data.frame(matrix(unlist(means_subject), nrow=length(means_subject), byrow=T))
+names(result2) <- names(merged)[1:79]
+result2 <- cbind(result2, subject=rownames(result2))
+result2$activity <- NA
+
+result <- rbind(result1, result2)
+
+write.table(x, "result.txt", row.names=FALSE)
